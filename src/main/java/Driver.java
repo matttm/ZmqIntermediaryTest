@@ -10,16 +10,28 @@ import org.zeromq.ZMQException;
  */
 public class Driver {
     public static void main(String[] argv) {
+        String protocol = "tcp";
+        String host = "localhost";
+        int port1 = 5556;
+        int port2 = 5557;
         try {
             Replier rep = new Replier(
-                    "replier", "tcp", "*", 5556);
+                    "replier", protocol, "*", port2);
+
+            Intermediary mediator = new Intermediary(protocol, host,
+                    port1, host, port2);
+
             Requester req = new Requester(
-                    "requester", "tcp", "localhost", 5556);
+                    "requester", protocol, host, port1);
 
             req.sendMessage("Msg 1");
+            mediator.forwardRequest();
             rep.receiveMessage();
+
             rep.sendMessage("Msg 2");
+            mediator.forwardReply();
             req.receiveMessage();
+
         } catch (ZMQException exc) {
             System.out.println(exc.toString());
         }
