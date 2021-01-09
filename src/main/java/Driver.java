@@ -1,4 +1,4 @@
-import org.zeromq.ZMQ;
+import io.reactivex.disposables.Disposable;
 import org.zeromq.ZMQException;
 
 /**
@@ -7,6 +7,11 @@ import org.zeromq.ZMQException;
  * matttmaloney@gmail.com
  * mtm9051@rit.edu
  * Language:  Java 1.8
+ */
+
+/***
+ * This Driver is to facilitate a test running of the Intermediary class, which
+ * will pass the message from the requester to the replier
  */
 public class Driver {
     public static void main(String[] argv) {
@@ -24,13 +29,18 @@ public class Driver {
             Requester req = new Requester(
                     "requester", protocol, host, port1);
 
+            Disposable ref = mediator.startListening().subscribe();
+
             req.sendMessage("Msg 1");
-            mediator.forwardRequest();
             rep.receiveMessage();
 
             rep.sendMessage("Msg 2");
-            mediator.forwardReply();
             req.receiveMessage();
+
+            rep.sendMessage("Msg 3");
+            req.receiveMessage();
+
+            ref.dispose();
 
         } catch (ZMQException exc) {
             System.out.println(exc.toString());

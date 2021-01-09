@@ -1,4 +1,7 @@
-import org.zeromq.ZMQ;
+import io.reactivex.Observable;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Matt Maloney on 1/8/2021
@@ -7,7 +10,13 @@ import org.zeromq.ZMQ;
  * mtm9051@rit.edu
  * Language:  Java 1.8
  */
+
+/**
+ * The Intermediary class is designed to poll a socket on an interval and
+ * pass a message between sockets
+ */
 public class Intermediary {
+    private final AtomicBoolean play$ = new AtomicBoolean(false);
     private Replier inSocket = null;
     private Requester outSocket = null;
 
@@ -19,12 +28,25 @@ public class Intermediary {
                 "Intermediary requester", "tcp", host2, port2);
     }
 
-    void forwardRequest() {
-        String msg = inSocket.receiveMessage();
-        outSocket.sendMessage(msg);
+    Observable<Long> startListening() {
+        play$.set(true);
+        return Observable.interval(10, TimeUnit.SECONDS)
+                .takeWhile(tick -> play$.get())
+                .doOnEach(tick -> {
+                    pause(); // stop observable
+                    String msg = inSocket.receiveMessage();
+                    outSocket.sendMessage(msg);
+                    msg = outSocket.receiveMessage();
+                    inSocket.sendMessage(msg);
+                    resume(); // play observable again
+                });
     }
-    void forwardReply() {
-        String msg = outSocket.receiveMessage();
-        inSocket.sendMessage(msg);
+
+    void resume() {
+        play$.set(true);
+    }
+
+    void pause() {
+        play$.set(false);
     }
 }
