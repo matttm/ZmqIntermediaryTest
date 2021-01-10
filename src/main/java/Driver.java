@@ -31,19 +31,14 @@ public class Driver {
             Disposable ref = mediator.startListening(protocol, host,
                     port1, host, port2).subscribe();
 
-            // request 1
-            req.sendMessage("req 1");
-            rep.receiveMessage();
-            // reply 1
-            rep.sendMessage("rep 1");
-            req.receiveMessage();
-
-            // request 2
-            req.sendMessage("req 2");
-            rep.receiveMessage();
-            // reply 2
-            rep.sendMessage("rep 2");
-            req.receiveMessage();
+            for (int i= 0; i < 2; i++) {
+                // request 1
+                req.sendMessage("req " + i);
+                rep.receiveMessage();
+                // reply 1
+                rep.sendMessage("rep " + i);
+                req.receiveMessage();
+            }
 
             ref.dispose();
 
