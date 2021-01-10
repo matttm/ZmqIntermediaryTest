@@ -40,6 +40,8 @@ public class Driver {
                 req.receiveMessage();
             }
 
+            req.shutdown();
+            rep.shutdown();
             ref.dispose();
 
         } catch (ZMQException exc) {

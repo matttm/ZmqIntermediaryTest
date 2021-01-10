@@ -25,10 +25,10 @@ public class Intermediary {
     Observable<Long> startListening(String protocol, String host1, int port1,
                                     String host2, int port2) {
         play$.set(true);
-        return Observable.interval(10, TimeUnit.SECONDS)
+        return Observable.interval(10, TimeUnit.MILLISECONDS)
                 .takeWhile(tick -> play$.get())
                 .doOnEach(tick -> {
-                    pause(); // stop observable
+                    // pause(); // stop observable
                     if (inSocket == null && outSocket == null) {
                         inSocket = new Replier(
                                 "Intermediary replier", protocol, "*", port1);
@@ -39,7 +39,11 @@ public class Intermediary {
                     outSocket.sendMessage(msg);
                     msg = outSocket.receiveMessage();
                     inSocket.sendMessage(msg);
-                    resume(); // play observable again
+                    // resume(); // play observable again
+                })
+                .doOnDispose(() -> {
+                    inSocket.shutdown();
+                    outSocket.shutdown();
                 });
     }
 

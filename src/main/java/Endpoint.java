@@ -10,10 +10,11 @@ import org.zeromq.ZMQ;
 abstract public class Endpoint {
     protected String name;
     protected ZMQ.Socket socket = null;
+    protected ZMQ.Context context = null;
 
     public Endpoint(String name, String protocol, String host, int port) {
         this.name = name;
-        ZMQ.Context context = ZMQ.context(1);
+        context = ZMQ.context(1);
         String url = protocol + "://" + host + ":" + port;
         instantiateSocket(context, url);
     }
@@ -30,5 +31,11 @@ abstract public class Endpoint {
         String s = new String(reply, ZMQ.CHARSET);
         System.out.println(name + " received: " + s);
         return s;
+    }
+
+    public void shutdown() {
+        System.out.println("Closing socket");
+        socket.close();
+        context.close();
     }
 }
