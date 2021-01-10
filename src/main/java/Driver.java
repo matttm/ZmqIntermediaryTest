@@ -23,21 +23,26 @@ public class Driver {
             Replier rep = new Replier(
                     "replier", protocol, "*", port2);
 
-            Intermediary mediator = new Intermediary(protocol, host,
-                    port1, host, port2);
+            Intermediary mediator = new Intermediary();
 
             Requester req = new Requester(
                     "requester", protocol, host, port1);
 
-            Disposable ref = mediator.startListening().subscribe();
+            Disposable ref = mediator.startListening(protocol, host,
+                    port1, host, port2).subscribe();
 
-            req.sendMessage("Msg 1");
+            // request 1
+            req.sendMessage("req 1");
             rep.receiveMessage();
-
-            rep.sendMessage("Msg 2");
+            // reply 1
+            rep.sendMessage("rep 1");
             req.receiveMessage();
 
-            rep.sendMessage("Msg 3");
+            // request 2
+            req.sendMessage("req 2");
+            rep.receiveMessage();
+            // reply 2
+            rep.sendMessage("rep 2");
             req.receiveMessage();
 
             ref.dispose();

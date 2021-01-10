@@ -20,20 +20,21 @@ public class Intermediary {
     private Replier inSocket = null;
     private Requester outSocket = null;
 
-    public Intermediary(String protocol, String host1, int port1,
-                        String host2, int port2) {
-        inSocket = new Replier(
-                "Intermediary replier", protocol, "*", port1);
-        outSocket = new Requester(
-                "Intermediary requester", "tcp", host2, port2);
-    }
+    public Intermediary() {}
 
-    Observable<Long> startListening() {
+    Observable<Long> startListening(String protocol, String host1, int port1,
+                                    String host2, int port2) {
         play$.set(true);
         return Observable.interval(10, TimeUnit.SECONDS)
                 .takeWhile(tick -> play$.get())
                 .doOnEach(tick -> {
                     pause(); // stop observable
+                    if (inSocket == null && outSocket == null) {
+                        inSocket = new Replier(
+                                "Intermediary replier", protocol, "*", port1);
+                        outSocket = new Requester(
+                                "Intermediary requester", "tcp", host2, port2);
+                    }
                     String msg = inSocket.receiveMessage();
                     outSocket.sendMessage(msg);
                     msg = outSocket.receiveMessage();
