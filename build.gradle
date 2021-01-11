@@ -13,4 +13,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     // https://mvnrepository.com/artifact/org.zeromq/jeromq
     compile group: 'org.zeromq', name: 'jeromq', version: '0.5.2'
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.19'
 }
