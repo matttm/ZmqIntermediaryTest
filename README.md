@@ -1,11 +1,11 @@
 # Zmq Intermediary Test
-## Desxription
+## Description
 This is a #est application to explore the combinatory use of ZeroMQ and ReactiveX.
 
 # Getting Started
 ## Building
 ## Running
 # Author
-- <att Maloney : matttm
+- Matt Maloney : matttm
 # Contact
-If you have trouble with this exploration, email ```matttmaloney@gmail.cxom```
+If you have trouble with this exploration, email ```matttmaloney@gmail.com```
