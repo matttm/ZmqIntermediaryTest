@@ -1,6 +1,6 @@
 # Zmq Intermediary Test
 ## Description
-This is a #est application to explore the combinatory use of ZeroMQ and ReactiveX.
+This is a test application to explore the combinatory use of ZeroMQ and ReactiveX.
 
 # Getting Started
 ## Building
