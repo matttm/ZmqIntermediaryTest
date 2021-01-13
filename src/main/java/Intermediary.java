@@ -33,7 +33,7 @@ public class Intermediary {
                         inSocket = new Replier(
                                 "Intermediary replier", protocol, "*", port1);
                         outSocket = new Requester(
-                                "Intermediary requester", "tcp", host2, port2);
+                                "Intermediary requester", protocol, host2, port2);
                     }
                     String msg = inSocket.receiveMessage();
                     outSocket.sendMessage(msg);
