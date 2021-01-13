@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Intermediary {
     private final AtomicBoolean play$ = new AtomicBoolean(false);
-    private Replier inSocket = null;
+    private Responder inSocket = null;
     private Requester outSocket = null;
 
     public Intermediary() {}
@@ -30,7 +30,7 @@ public class Intermediary {
                 .doOnEach(tick -> {
                     // pause(); // stop observable
                     if (inSocket == null && outSocket == null) {
-                        inSocket = new Replier(
+                        inSocket = new Responder(
                                 "Intermediary replier", protocol, "*", port1);
                         outSocket = new Requester(
                                 "Intermediary requester", protocol, host2, port2);

@@ -20,7 +20,7 @@ public class Driver {
         int port1 = 5556;
         int port2 = 5557;
         try {
-            Replier rep = new Replier(
+            Responder rep = new Responder(
                     "replier", protocol, "*", port2);
 
             Intermediary mediator = new Intermediary();

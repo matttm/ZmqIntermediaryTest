@@ -8,8 +8,8 @@ import org.zeromq.ZMQ;
  * mtm9051@rit.edu
  * Language:  Java 1.8
  */
-public class Replier extends Endpoint {
-    public Replier(String name, String protocol, String host, int port) {
+public class Responder extends Endpoint {
+    public Responder(String name, String protocol, String host, int port) {
         super(name, protocol, host, port);
     }
 
