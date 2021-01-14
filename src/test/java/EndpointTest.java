@@ -1,6 +1,4 @@
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Created by Matt Maloney on 1/13/2021
@@ -13,19 +11,19 @@ public class EndpointTest {
     private Requester requester = null;
     private Responder responder = null;
 
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         String host = "localhost";
         String protocol = "tcp";
         int port = 5556;
-        Responder rep = new Responder(
+        responder = new Responder(
                 "replier", protocol, "*", port);
-        Requester req = new Requester(
+        requester = new Requester(
                 "requester", protocol, host, port);
     }
 
-    @AfterClass
-    public static void shutdown() {
+    @After
+    public void shutdown() {
         responder.shutdown();
         requester.shutdown();
     }
